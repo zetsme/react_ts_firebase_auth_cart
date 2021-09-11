@@ -7,13 +7,13 @@ export interface AuthStateInterface {
   error: string;
 }
 
-const initialState = {
+const initialState: AuthStateInterface = {
   loading: false,
   currentUser: null,
   error: '',
 };
 
-export const authReducer = (state = initialState, action: AuthAction) => {
+export const authReducer = (state = initialState, action: AuthAction): AuthStateInterface => {
   switch (action.type) {
     case AuthEnum.AUTH_START:
       return { ...state, loading: true, error: '' };

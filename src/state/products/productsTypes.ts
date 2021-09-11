@@ -1,4 +1,4 @@
-import { ProductInterface } from '../../types';
+import { ProductDocInterface, ProductInterface } from '../../types';
 
 export enum ProductEnum {
   PRODUCT_START = 'PRODUCT_START',
@@ -18,15 +18,15 @@ export interface ProductFailAction {
 }
 export interface ProductAddAction {
   type: ProductEnum.PRODUCT_ADD;
-  payload: ProductInterface;
+  payload: ProductDocInterface;
 }
 export interface ProductGetAllAction {
   type: ProductEnum.PRODUCT_GET_ALL;
-  payload: ProductInterface[];
+  payload: ProductDocInterface[];
 }
 export interface ProductGetOneAction {
   type: ProductEnum.PRODUCT_GET_ONE;
-  payload: ProductInterface;
+  payload: ProductDocInterface;
 }
 export interface ProductDeleteAction {
   type: ProductEnum.PRODUCT_DELETE;
@@ -34,7 +34,7 @@ export interface ProductDeleteAction {
 }
 export interface ProductUpdateAction {
   type: ProductEnum.PRODUCT_UPDATE;
-  payload: ProductInterface;
+  payload: { product: ProductInterface; docId: string };
 }
 
 export type ProductAction =

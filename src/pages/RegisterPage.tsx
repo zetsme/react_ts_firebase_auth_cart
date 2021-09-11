@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { register } from '../state/auth/authActionCreators';
+import { actionCreators } from '../state';
 
 const initialState = {
   email: '',
@@ -21,7 +21,7 @@ const RegisterPage: React.FC = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (email && displayName && password) {
-      dispatch(register(inputValues));
+      dispatch(actionCreators.register(inputValues));
       history.push('/');
     }
   };

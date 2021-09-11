@@ -11,6 +11,15 @@ export interface ProductInterface {
   category: string;
   description: string;
   image: string;
-  amount: number;
-  docId?: string;
+}
+export interface ProductDocInterface extends ProductInterface {
+  docId: string;
+}
+export interface UserInfoDocInterface {
+  cart: ProductDocInterface[];
+  role: string;
+  userId: string;
+  loading: boolean;
+  error: string;
+  docId: string;
 }

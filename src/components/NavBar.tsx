@@ -1,18 +1,25 @@
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useDispatch } from 'react-redux';
-import { logout } from '../state/auth/authActionCreators';
 import { Link } from 'react-router-dom';
-import { User } from '@firebase/auth';
-
+import { actionCreators } from '../state';
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
-  const { currentUser }: { currentUser: User } = useAppSelector((state) => state.auth);
+  const { currentUser, error, loading } = useAppSelector((state) => state.auth);
+  const { userId } = useAppSelector((state) => state.userInfo);
+
+  if (loading) {
+    return <h1>Loading</h1>;
+  }
+  if (error) {
+    <h1>{error}</h1>;
+  }
   return (
     <div>
       {currentUser ? (
         <div>
           <p>{currentUser.displayName}</p>
-          <button onClick={() => dispatch(logout())}>Log Out</button>
+          <button onClick={() => dispatch(actionCreators.logout())}>Log Out</button>
+          {userId ? <button>Cart</button> : null}
         </div>
       ) : (
         <div>

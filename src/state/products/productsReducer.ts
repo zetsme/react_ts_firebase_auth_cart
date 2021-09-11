@@ -1,9 +1,9 @@
 import { ProductAction, ProductEnum } from './productsTypes';
-import { ProductInterface } from '../../types';
+import { ProductDocInterface } from '../../types';
 
 export interface ProductsStateInterface {
-  products: ProductInterface[];
-  product: ProductInterface | null;
+  products: ProductDocInterface[];
+  product: ProductDocInterface | null;
   loading: boolean;
   error: string;
 }
@@ -37,13 +37,12 @@ export const productsReducer = (
     case ProductEnum.PRODUCT_GET_ONE:
       return { ...state, product: action.payload, loading: false };
     case ProductEnum.PRODUCT_UPDATE: {
+      const { docId, product } = action.payload;
       return {
         ...state,
         loading: false,
         product: null,
-        products: state.products.map((i) =>
-          i.docId === action.payload.docId ? { ...action.payload } : i
-        ),
+        products: state.products.map((i) => (i.docId === docId ? { ...product, docId } : i)),
       };
     }
     default:

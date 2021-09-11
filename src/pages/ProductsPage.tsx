@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ProductSmallCard from '../components/ProductSmallCard';
 import { useAppSelector } from '../hooks/useAppSelector';
-import {
-  addProduct,
-  getAllProducts,
-  getOneProduct,
-  updateProduct,
-} from '../state/products/productsActionCreators';
+import { actionCreators } from '../state';
 
 const initialState = {
   title: '',
@@ -15,24 +10,23 @@ const initialState = {
   category: '',
   description: '',
   image: '',
-  amount: 0,
 };
 
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [inputValues, setInputValues] = useState(initialState);
-  const { title, price, category, amount, description, image } = inputValues;
+  const { title, price, category, description, image } = inputValues;
 
   const { error, loading, products, product } = useAppSelector((state) => state.products);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (editMode && product?.docId) {
-      dispatch(updateProduct(product?.docId, inputValues));
+    if (editMode && product) {
+      dispatch(actionCreators.updateProduct(product.docId, inputValues));
       setEditMode(false);
     } else {
-      dispatch(addProduct(inputValues));
+      dispatch(actionCreators.addProduct(inputValues));
     }
     setInputValues(initialState);
   };
@@ -41,11 +35,11 @@ const ProductsPage: React.FC = () => {
 
   const editProduct = (docId: string) => {
     setEditMode(true);
-    dispatch(getOneProduct(docId));
+    dispatch(actionCreators.getOneProduct(docId));
   };
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(actionCreators.getAllProducts());
   }, [dispatch]);
 
   useEffect(() => {
@@ -92,16 +86,6 @@ const ProductsPage: React.FC = () => {
             value={image}
             onChange={onChange}
           />
-          <label>
-            Amount
-            <input
-              type='number'
-              placeholder='Amount'
-              name='amount'
-              value={amount}
-              onChange={onChange}
-            />
-          </label>
           <label>
             Price
             <input
