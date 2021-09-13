@@ -1,8 +1,4 @@
-import * as authActionCreators from './auth/authActionCreators';
-import * as productsActionCreators from './products/productsActionCreators';
-import * as userInfoActionCreators from './userInfo/userInfoActionCreators';
-export const actionCreators = {
-  ...authActionCreators,
-  ...productsActionCreators,
-  ...userInfoActionCreators,
-};
+export * as authActionCreators from './auth/authActionCreators';
+export * as productsActionCreators from './products/productsActionCreators';
+export * as userInfoActionCreators from './userInfo/userInfoActionCreators';
+export * as ordersActionCreators from './orders/ordersActionCreators';

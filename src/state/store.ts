@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import { authReducer } from './auth/authReducer';
 import { productsReducer } from './products/productsReducer';
 import { userInfoReducer } from './userInfo/userInfoReducer';
+import { ordersReducer } from './orders/ordersReducer';
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   products: productsReducer,
   userInfo: userInfoReducer,
+  orders: ordersReducer,
 });
 
 export const store = createStore(

@@ -15,9 +15,9 @@ export const addProduct = (product: ProductInterface) => async (dispatch: AppDis
 
 export const getAllProducts = () => async (dispatch: AppDispatch) => {
   dispatch({ type: ProductEnum.PRODUCT_START });
-  const products = await firebaseProdcutsFunctions.getAllProductsFB();
-  dispatch({ type: ProductEnum.PRODUCT_GET_ALL, payload: products });
   try {
+    const products = await firebaseProdcutsFunctions.getAllProductsFB();
+    dispatch({ type: ProductEnum.PRODUCT_GET_ALL, payload: products });
   } catch (error) {
     dispatch({ type: ProductEnum.PRODUCT_ERROR, payload: 'Product Get All Error' });
   }

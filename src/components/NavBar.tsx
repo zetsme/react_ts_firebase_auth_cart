@@ -1,25 +1,33 @@
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { actionCreators } from '../state';
+import { authActionCreators, userInfoActionCreators } from '../state';
+import { memo } from 'react';
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
-  const { currentUser, error, loading } = useAppSelector((state) => state.auth);
-  const { userId } = useAppSelector((state) => state.userInfo);
+  const { currentUser } = useAppSelector((state) => state.auth);
+  const { userId, role } = useAppSelector((state) => state.userInfo);
 
-  if (loading) {
-    return <h1>Loading</h1>;
-  }
-  if (error) {
-    <h1>{error}</h1>;
-  }
   return (
     <div>
       {currentUser ? (
         <div>
           <p>{currentUser.displayName}</p>
-          <button onClick={() => dispatch(actionCreators.logout())}>Log Out</button>
-          {userId ? <button>Cart</button> : null}
+          <button
+            onClick={() => {
+              dispatch(authActionCreators.logout());
+              dispatch(userInfoActionCreators.clearUserInfo());
+            }}
+          >
+            Log Out
+          </button>
+          {userId && role === 'admin' && (
+            <div>
+              <Link to='/products'>Products</Link>
+              <Link to='/orders'>Orders</Link>
+            </div>
+          )}
+          {userId && role === 'customer' && <button>Cart</button>}
         </div>
       ) : (
         <div>
@@ -31,4 +39,4 @@ const NavBar: React.FC = () => {
   );
 };
 
-export default NavBar;
+export default memo(NavBar);

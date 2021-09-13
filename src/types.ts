@@ -15,11 +15,19 @@ export interface ProductInterface {
 export interface ProductDocInterface extends ProductInterface {
   docId: string;
 }
-export interface UserInfoDocInterface {
-  cart: ProductDocInterface[];
-  role: string;
+
+export interface CartItemInterface extends ProductDocInterface {
+  amount: number;
+}
+
+export interface UserAuthValuesInterface {
   userId: string;
-  loading: boolean;
-  error: string;
+  email: string;
+  displayName: string;
+}
+
+export interface UserInfoInterface extends UserAuthValuesInterface {
+  role: string;
+  cart: CartItemInterface[];
   docId: string;
 }

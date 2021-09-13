@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { actionCreators } from '../state';
+import { authActionCreators } from '../state';
 const initialState = {
   email: '',
   password: '',
@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (email && password) {
-      dispatch(actionCreators.login(inputValues));
+      dispatch(authActionCreators.login(inputValues));
       history.push('/');
     }
   };

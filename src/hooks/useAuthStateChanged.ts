@@ -2,8 +2,8 @@ import { onAuthStateChanged } from '@firebase/auth';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { auth } from '../services/firebaseAuth';
-import { setUser } from '../state/auth/authActionCreators';
-import { actionCreators } from '../state';
+import { authActionCreators } from '../state';
+import { userInfoActionCreators } from '../state';
 
 export const useAuthStateChanged = () => {
   const dispatch = useDispatch();
@@ -11,8 +11,8 @@ export const useAuthStateChanged = () => {
   useEffect(() => {
     const listener = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
-        dispatch(setUser(authUser));
-        dispatch(actionCreators.getUserInfo(authUser.uid));
+        dispatch(authActionCreators.setUser(authUser));
+        dispatch(userInfoActionCreators.getUserInfo(authUser.uid));
       }
       setLoading(false);
     });

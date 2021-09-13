@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ProductSmallCard from '../components/ProductSmallCard';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { actionCreators } from '../state';
+import { productsActionCreators } from '../state';
 
 const initialState = {
   title: '',
@@ -23,10 +23,10 @@ const ProductsPage: React.FC = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (editMode && product) {
-      dispatch(actionCreators.updateProduct(product.docId, inputValues));
+      dispatch(productsActionCreators.updateProduct(product.docId, inputValues));
       setEditMode(false);
     } else {
-      dispatch(actionCreators.addProduct(inputValues));
+      dispatch(productsActionCreators.addProduct(inputValues));
     }
     setInputValues(initialState);
   };
@@ -35,11 +35,11 @@ const ProductsPage: React.FC = () => {
 
   const editProduct = (docId: string) => {
     setEditMode(true);
-    dispatch(actionCreators.getOneProduct(docId));
+    dispatch(productsActionCreators.getOneProduct(docId));
   };
 
   useEffect(() => {
-    dispatch(actionCreators.getAllProducts());
+    dispatch(productsActionCreators.getAllProducts());
   }, [dispatch]);
 
   useEffect(() => {

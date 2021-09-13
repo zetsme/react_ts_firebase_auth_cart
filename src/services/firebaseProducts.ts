@@ -2,7 +2,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from '@firebase/f
 import { ProductDocInterface, ProductInterface } from '../types';
 import { db } from './firebaseDB';
 
-const productsCollection = collection(db, 'products');
+export const productsCollection = collection(db, 'products');
 
 export const addProductFB = async (product: ProductInterface) => {
   const { id } = await addDoc(productsCollection, product);

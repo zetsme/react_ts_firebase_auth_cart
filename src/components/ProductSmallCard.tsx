@@ -1,13 +1,13 @@
 import { useDispatch } from 'react-redux';
-import { deleteProduct } from '../state/products/productsActionCreators';
+import { productsActionCreators } from '../state';
 import { ProductDocInterface } from '../types';
 
-interface ProdcutSmallCardProps {
+interface ProductSmallCardProps {
   product: ProductDocInterface;
   editProduct: (docId: string) => void;
 }
 
-const ProductSmallCard: React.FC<ProdcutSmallCardProps> = ({ product, editProduct }) => {
+const ProductSmallCard: React.FC<ProductSmallCardProps> = ({ product, editProduct }) => {
   const dispatch = useDispatch();
   return (
     <div>
@@ -17,7 +17,9 @@ const ProductSmallCard: React.FC<ProdcutSmallCardProps> = ({ product, editProduc
       <p>Description : {product.description}</p>
       <p>Price: ${product.price}</p>
       <button onClick={() => editProduct(product.docId)}>Update</button>
-      <button onClick={() => dispatch(deleteProduct(product.docId))}>Delete</button>
+      <button onClick={() => dispatch(productsActionCreators.deleteProduct(product.docId))}>
+        Delete
+      </button>
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import { User } from '@firebase/auth';
-import { firebaseAuthFunctions } from '../../services';
+import { firebaseAuthFunctions, firebaseUserInfoFunctions } from '../../services';
 import { LoginInterface, RegisterInterface } from '../../types';
 import { AppDispatch } from '../store';
+import { UserInfoEnum } from '../userInfo/userInfoTypes';
 import { AuthEnum } from './authTypes';
 
 export const register =
@@ -10,7 +11,14 @@ export const register =
     dispatch({ type: AuthEnum.AUTH_START });
     try {
       const user = await firebaseAuthFunctions.registerUser({ email, password, displayName });
-      dispatch({ type: AuthEnum.AUTH_SUCCESS, payload: user });
+      if (user) {
+        dispatch({ type: AuthEnum.AUTH_SUCCESS, payload: user });
+        // TODO: get user info by user.uid
+        // test
+        const userInfo = await firebaseUserInfoFunctions.getUserInfo(user.uid);
+        const { cart, role, userId, docId } = userInfo;
+        dispatch({ type: UserInfoEnum.USER_INFO_GET, payload: { cart, role, userId, docId } });
+      }
     } catch (error) {
       dispatch({ type: AuthEnum.AUTH_FAIL, payload: 'Register Error' });
     }

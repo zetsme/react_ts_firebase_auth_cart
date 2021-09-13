@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { LoginInterface, RegisterInterface } from '../types';
+import { LoginInterface, RegisterInterface, UserAuthValuesInterface } from '../types';
 import { firebaseUserInfoFunctions } from './index';
 
 export const auth = getAuth(firebaseApp);
@@ -15,14 +15,17 @@ export const registerUser = async ({ email, password, displayName }: RegisterInt
   await createUserWithEmailAndPassword(auth, email, password);
   if (auth.currentUser) {
     await updateProfile(auth.currentUser, { displayName });
-    await firebaseUserInfoFunctions.addUsersInfo(auth.currentUser.uid);
+    await firebaseUserInfoFunctions.addUsersInfo({
+      userId: auth.currentUser.uid,
+      displayName: auth.currentUser.displayName,
+      email: auth.currentUser.email,
+    } as UserAuthValuesInterface);
   }
   return auth.currentUser;
 };
 
 export const logInUser = async ({ email, password }: LoginInterface) => {
   await signInWithEmailAndPassword(auth, email, password);
-  console.log(auth.currentUser);
   return auth.currentUser;
 };
 
