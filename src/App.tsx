@@ -8,6 +8,7 @@ import ProductsPage from './pages/ProductsPage';
 import RegisterPage from './pages/RegisterPage';
 import { AdminRoute } from './routes/AdminRoute';
 import { RouteNames } from './routes';
+import { Container } from '@material-ui/core';
 
 const App: React.FC = () => {
   const { loading } = useAuthStateChanged();
@@ -17,13 +18,15 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <NavBar />
-      <Switch>
-        <Route path={RouteNames.HOME} exact component={HomePage} />
-        <Route path={RouteNames.REGISTER} component={RegisterPage} />
-        <Route path={RouteNames.LOGIN} component={LoginPage} />
-        <AdminRoute component={ProductsPage} path={RouteNames.ADMIN_PRODUCTS} />
-        <AdminRoute path={RouteNames.ADMIN_ORDERS} component={OrdersPage} />
-      </Switch>
+      <Container>
+        <Switch>
+          <Route path={RouteNames.HOME} exact component={HomePage} />
+          <Route path={RouteNames.REGISTER} component={RegisterPage} />
+          <Route path={RouteNames.LOGIN} component={LoginPage} />
+          <AdminRoute component={ProductsPage} path={RouteNames.ADMIN_PRODUCTS} />
+          <AdminRoute path={RouteNames.ADMIN_ORDERS} component={OrdersPage} />
+        </Switch>
+      </Container>
     </BrowserRouter>
   );
 };

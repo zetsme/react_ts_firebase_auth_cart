@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActionCreators } from '../state';
+import { TextField, Button } from '@material-ui/core';
+import AuthForm from '../UIcomponents/AuthForm';
+
 const initialState = {
   email: '',
   password: '',
@@ -24,20 +27,28 @@ const LoginPage: React.FC = () => {
     }
   };
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input type='email' placeholder='Email' name='email' value={email} onChange={onChange} />
-        <input
-          type='password'
-          placeholder='Password'
-          autoComplete='off'
-          name='password'
-          value={password}
-          onChange={onChange}
-        />
-        <button type='submit'>Submit</button>
-      </form>
-    </div>
+    <AuthForm title='Login Form' {...{ onSubmit }}>
+      <TextField
+        type='email'
+        label='Email'
+        variant='outlined'
+        name='email'
+        value={email}
+        onChange={onChange}
+      />
+      <TextField
+        type='password'
+        label='Password'
+        variant='outlined'
+        autoComplete='off'
+        name='password'
+        value={password}
+        onChange={onChange}
+      />
+      <Button size='large' variant='contained' color='primary' type='submit'>
+        Log In
+      </Button>
+    </AuthForm>
   );
 };
 
