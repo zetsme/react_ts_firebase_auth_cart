@@ -1,14 +1,14 @@
 import { useDispatch } from 'react-redux';
 import { CartItemInterface } from '../types';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { userInfoActionCreators } from '../state';
+import { userDetailsActionCreators } from '../state';
 
 interface CartProductCardProps {
   cartItem: CartItemInterface;
 }
 
 const CartProductCard: React.FC<CartProductCardProps> = ({ cartItem }) => {
-  const { userId } = useAppSelector((state) => state.userInfo);
+  const { userId } = useAppSelector((state) => state.userDetails);
   const dispatch = useDispatch();
 
   return (
@@ -18,12 +18,16 @@ const CartProductCard: React.FC<CartProductCardProps> = ({ cartItem }) => {
       <p>Category: {cartItem.category}</p>
       <p>Description : {cartItem.description}</p>
       <p>Price: ${cartItem.price}</p>
-      <button onClick={() => dispatch(userInfoActionCreators.addOneToCart(cartItem.docId, userId))}>
+      <button
+        onClick={() => dispatch(userDetailsActionCreators.addOneToCart(cartItem.docId, userId))}
+      >
         Add
       </button>
       <p>Amount: {cartItem.amount}</p>
       <button
-        onClick={() => dispatch(userInfoActionCreators.removeOneFromCart(cartItem.docId, userId))}
+        onClick={() =>
+          dispatch(userDetailsActionCreators.removeOneFromCart(cartItem.docId, userId))
+        }
       >
         Remove
       </button>

@@ -1,4 +1,6 @@
 import { firebaseApp } from './firebase';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection } from 'firebase/firestore';
 
-export const db = getFirestore(firebaseApp);
+const db = getFirestore(firebaseApp);
+export const productsCollection = collection(db, 'products');
+export const userDetailsCollection = collection(db, 'userDetails');

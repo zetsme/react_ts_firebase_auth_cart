@@ -8,7 +8,7 @@ import { productsActionCreators } from '../state';
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const { error, loading, products } = useAppSelector((state) => state.products);
-  const { cart } = useAppSelector((state) => state.userInfo);
+  const { cart } = useAppSelector((state) => state.userDetails);
 
   useEffect(() => {
     dispatch(productsActionCreators.getAllProducts());

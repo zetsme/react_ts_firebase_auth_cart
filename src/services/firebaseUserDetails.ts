@@ -1,22 +1,21 @@
-import { addDoc, collection, getDocs, doc, updateDoc } from '@firebase/firestore';
+import { addDoc, getDocs, doc, updateDoc } from '@firebase/firestore';
 import {
   CartItemInterface,
   ProductDocInterface,
   UserAuthValuesInterface,
-  UserInfoInterface,
+  UserDetailsInterface,
+  UserDetailsCartItemInterface,
+  AllCartInterface,
 } from '../types';
-import { productsCollection } from './firebaseProducts';
-import { db } from './firebaseDB';
-
-const usersCollection = collection(db, 'usersInfo');
+import { userDetailsCollection, productsCollection } from './firebaseDB';
 
 export const addUsersInfo = async ({ userId, email, displayName }: UserAuthValuesInterface) => {
-  await addDoc(usersCollection, { role: 'customer', cart: [], userId, email, displayName });
+  await addDoc(userDetailsCollection, { role: 'customer', cart: [], userId, email, displayName });
 };
-export const getUserInfo = async (userId: string): Promise<UserInfoInterface> => {
-  const data = await getDocs(usersCollection);
+export const getUserInfo = async (userId: string): Promise<UserDetailsInterface> => {
+  const data = await getDocs(userDetailsCollection);
   const currentUser = data.docs.find((item) => item.data().userId === userId);
-  const cart: usersInfoCartItemInterface[] = currentUser?.data().cart;
+  const cart: UserDetailsCartItemInterface[] = currentUser?.data().cart;
   const products = (await getDocs(productsCollection)).docs.map((item) => ({
     ...item.data(),
     docId: item.id,
@@ -29,23 +28,18 @@ export const getUserInfo = async (userId: string): Promise<UserInfoInterface> =>
     ...currentUser?.data(),
     cart: cartWithProducts,
     docId: currentUser?.id,
-  } as UserInfoInterface;
+  } as UserDetailsInterface;
 };
-
-export interface usersInfoCartItemInterface {
-  amount: number;
-  productDocId: string;
-}
 
 export const addToCart = async (
   productDocId: string,
   userId: string
 ): Promise<CartItemInterface[]> => {
-  const data = await getDocs(usersCollection);
+  const data = await getDocs(userDetailsCollection);
   const currentUser = data.docs.find((item) => item.data().userId === userId);
-  const cart: usersInfoCartItemInterface[] = currentUser?.data().cart;
+  const cart: UserDetailsCartItemInterface[] = currentUser?.data().cart;
   const isItemInCard = cart.find((item) => item.productDocId === productDocId);
-  const result = (): usersInfoCartItemInterface[] => {
+  const result = (): UserDetailsCartItemInterface[] => {
     if (isItemInCard) {
       return cart.map((item: any) =>
         item.productDocId === productDocId ? { ...item, amount: item.amount + 1 } : item
@@ -53,7 +47,7 @@ export const addToCart = async (
     }
     return [...cart, { productDocId, amount: 1 }];
   };
-  const currentUserRef = doc(usersCollection, currentUser?.id);
+  const currentUserRef = doc(userDetailsCollection, currentUser?.id);
   await updateDoc(currentUserRef, {
     cart: result(),
   });
@@ -69,23 +63,23 @@ export const addToCart = async (
 };
 
 export const addOneToCart = async (productDocId: string, userId: string) => {
-  const data = await getDocs(usersCollection);
+  const data = await getDocs(userDetailsCollection);
   const currentUser = data.docs.find((item) => item.data().userId === userId);
-  const cart: usersInfoCartItemInterface[] = currentUser?.data().cart;
-  const result = (): usersInfoCartItemInterface[] =>
+  const cart: UserDetailsCartItemInterface[] = currentUser?.data().cart;
+  const result = (): UserDetailsCartItemInterface[] =>
     cart.map((item: any) =>
       item.productDocId === productDocId ? { ...item, amount: item.amount + 1 } : item
     );
-  const currentUserRef = doc(usersCollection, currentUser?.id);
+  const currentUserRef = doc(userDetailsCollection, currentUser?.id);
   await updateDoc(currentUserRef, {
     cart: result(),
   });
 };
 
 export const removeOneFromCart = async (productDocId: string, userId: string) => {
-  const data = await getDocs(usersCollection);
+  const data = await getDocs(userDetailsCollection);
   const currentUser = data.docs.find((item) => item.data().userId === userId);
-  const cart: usersInfoCartItemInterface[] = currentUser?.data().cart;
+  const cart: UserDetailsCartItemInterface[] = currentUser?.data().cart;
   const result = () =>
     cart.reduce((acc, cur) => {
       if (cur.productDocId === productDocId) {
@@ -94,24 +88,15 @@ export const removeOneFromCart = async (productDocId: string, userId: string) =>
       } else {
         return [...acc, cur];
       }
-    }, [] as usersInfoCartItemInterface[]);
-  const currentUserRef = doc(usersCollection, currentUser?.id);
+    }, [] as UserDetailsCartItemInterface[]);
+  const currentUserRef = doc(userDetailsCollection, currentUser?.id);
   await updateDoc(currentUserRef, {
     cart: result(),
   });
 };
 
-interface AllCartInterface {
-  displayName: string;
-  docId: string;
-  email: string;
-  role: string;
-  userId: string;
-  cart: usersInfoCartItemInterface[];
-}
-
-export const getAllCarts = async (): Promise<UserInfoInterface[]> => {
-  let usersInfo = (await getDocs(usersCollection)).docs.map(
+export const getAllCarts = async (): Promise<UserDetailsInterface[]> => {
+  let usersInfo = (await getDocs(userDetailsCollection)).docs.map(
     (item) =>
       ({
         ...item.data(),
@@ -136,5 +121,5 @@ export const getAllCarts = async (): Promise<UserInfoInterface[]> => {
     return { ...item, cart: result };
   });
 
-  return temp as UserInfoInterface[];
+  return temp;
 };

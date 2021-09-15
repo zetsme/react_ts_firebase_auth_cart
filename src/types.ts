@@ -26,8 +26,21 @@ export interface UserAuthValuesInterface {
   displayName: string;
 }
 
-export interface UserInfoInterface extends UserAuthValuesInterface {
+export interface UserDetailsInterface extends UserAuthValuesInterface {
   role: string;
   cart: CartItemInterface[];
   docId: string;
+}
+
+export interface UserDetailsCartItemInterface {
+  amount: number;
+  productDocId: string;
+}
+export interface AllCartInterface {
+  displayName: string;
+  docId: string;
+  email: string;
+  role: string;
+  userId: string;
+  cart: UserDetailsCartItemInterface[];
 }

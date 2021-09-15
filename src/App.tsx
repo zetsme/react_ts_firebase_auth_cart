@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import OrdersPage from './pages/OrdersPage';
 import ProductsPage from './pages/ProductsPage';
 import RegisterPage from './pages/RegisterPage';
+import { AdminRoute } from './routes/AdminRoute';
+import { RouteNames } from './routes';
 
 const App: React.FC = () => {
   const { loading } = useAuthStateChanged();
@@ -16,11 +18,11 @@ const App: React.FC = () => {
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <Route path='/' exact component={HomePage} />
-        <Route path='/register' component={RegisterPage} />
-        <Route path='/login' component={LoginPage} />
-        <Route path='/products' component={ProductsPage} />
-        <Route path='/orders' component={OrdersPage} />
+        <Route path={RouteNames.HOME} exact component={HomePage} />
+        <Route path={RouteNames.REGISTER} component={RegisterPage} />
+        <Route path={RouteNames.LOGIN} component={LoginPage} />
+        <AdminRoute component={ProductsPage} path={RouteNames.ADMIN_PRODUCTS} />
+        <AdminRoute path={RouteNames.ADMIN_ORDERS} component={OrdersPage} />
       </Switch>
     </BrowserRouter>
   );

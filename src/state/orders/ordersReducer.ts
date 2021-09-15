@@ -1,8 +1,8 @@
-import { UserInfoInterface } from '../../types';
+import { UserDetailsInterface } from '../../types';
 import { OrdersAction, OrdersEnum } from './ordersTypes';
 
 interface OrdersStateInterface {
-  orders: UserInfoInterface[];
+  orders: UserDetailsInterface[];
   loading: boolean;
   error: string;
 }

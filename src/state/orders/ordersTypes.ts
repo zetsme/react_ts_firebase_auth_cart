@@ -1,4 +1,4 @@
-import { UserInfoInterface } from '../../types';
+import { UserDetailsInterface } from '../../types';
 
 export enum OrdersEnum {
   ORDERS_LOADING = 'ORDERS_LOADING',
@@ -15,6 +15,6 @@ export interface OrdersErrorAction {
 }
 export interface OrdersGetAllAction {
   type: OrdersEnum.ORDERS_GET_ALL;
-  payload: UserInfoInterface[];
+  payload: UserDetailsInterface[];
 }
 export type OrdersAction = OrdersLoadingAction | OrdersErrorAction | OrdersGetAllAction;

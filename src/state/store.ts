@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { authReducer } from './auth/authReducer';
 import { productsReducer } from './products/productsReducer';
-import { userInfoReducer } from './userInfo/userInfoReducer';
+import { userDetailsReducer } from './userInfo/userInfoReducer';
 import { ordersReducer } from './orders/ordersReducer';
 
 declare global {
@@ -15,7 +15,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   auth: authReducer,
   products: productsReducer,
-  userInfo: userInfoReducer,
+  userDetails: userDetailsReducer,
   orders: ordersReducer,
 });
 

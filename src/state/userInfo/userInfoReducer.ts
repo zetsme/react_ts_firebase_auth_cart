@@ -1,5 +1,5 @@
 import { CartItemInterface } from '../../types';
-import { UserInfoAction, UserInfoEnum } from './userInfoTypes';
+import { UserDetailsAction, UserDetailsEnum } from './userInfoTypes';
 
 export interface UserInfoStateInterface {
   cart: CartItemInterface[];
@@ -19,23 +19,23 @@ const initialState: UserInfoStateInterface = {
   docId: '',
 };
 
-export const userInfoReducer = (
+export const userDetailsReducer = (
   state = initialState,
-  action: UserInfoAction
+  action: UserDetailsAction
 ): UserInfoStateInterface => {
   switch (action.type) {
-    case UserInfoEnum.USER_INFO_START:
+    case UserDetailsEnum.USER_DETAILS_START:
       return { ...state, loading: true, error: '' };
-    case UserInfoEnum.USER_INFO_ERROR:
+    case UserDetailsEnum.USER_DETAILS_ERROR:
       return { ...state, loading: false, error: action.payload };
-    case UserInfoEnum.USER_INFO_GET:
+    case UserDetailsEnum.USER_DETAILS_GET:
       const { role, userId, cart, docId } = action.payload;
       return { ...state, loading: false, role, userId, cart, docId };
-    case UserInfoEnum.USER_INFO_ADD_TO_CART:
+    case UserDetailsEnum.USER_DETAILS_ADD_TO_CART:
       return { ...state, loading: false, cart: [...action.payload] };
-    case UserInfoEnum.USER_INFO_CLEAR:
+    case UserDetailsEnum.USER_DETAILS_CLEAR:
       return { ...state, cart: [], role: '', userId: '', docId: '' };
-    case UserInfoEnum.USER_INFO_ADD_ONE_TO_CART:
+    case UserDetailsEnum.USER_DETAILS_ADD_ONE_TO_CART:
       return {
         ...state,
         loading: false,
@@ -44,7 +44,7 @@ export const userInfoReducer = (
         ),
       };
 
-    case UserInfoEnum.USER_INFO_REMOVE_ONE_FROM_CART:
+    case UserDetailsEnum.USER_DETAILS_REMOVE_ONE_FROM_CART:
       return {
         ...state,
         loading: false,
