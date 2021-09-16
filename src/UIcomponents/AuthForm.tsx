@@ -1,47 +1,39 @@
-import { makeStyles, Container, Typography } from '@material-ui/core';
+import { Container, Typography, styled } from '@mui/material';
 
 interface FormProps {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   title: string;
 }
 
-const useStyles = makeStyles((theme) => ({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(2),
-    flex: 1,
+const Form = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  flex: 1,
+}));
+
+const FormContainer = styled(Container)(({ theme }) => ({
+  height: `calc(100vh - 56px)`,
+  [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+    height: `calc(100vh - 48px)`,
   },
-  root: {
-    height: `calc(100vh - 56px)`,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      height: `calc(100vh - 48px)`,
-    },
-    [theme.breakpoints.up('sm')]: {
-      height: `calc(100vh - 64px)`,
-    },
-    display: 'flex',
-    alignItems: 'center',
+  [theme.breakpoints.up('sm')]: {
+    height: `calc(100vh - 64px)`,
   },
+  display: 'flex',
+  alignItems: 'center',
 }));
 
 const AuthForm: React.FC<FormProps> = ({ children, onSubmit, title }) => {
-  const classes = useStyles();
   return (
-    <Container
-      classes={{
-        root: classes.root,
-      }}
-      maxWidth='xs'
-      disableGutters
-    >
-      <form className={classes.form} onSubmit={onSubmit}>
+    <FormContainer maxWidth='xs' disableGutters>
+      <Form onSubmit={onSubmit}>
         <Typography variant='h4' align='center'>
           {title}
         </Typography>
         {children}
-      </form>
-    </Container>
+      </Form>
+    </FormContainer>
   );
 };
 export default AuthForm;

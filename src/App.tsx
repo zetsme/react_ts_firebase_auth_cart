@@ -8,10 +8,12 @@ import ProductsPage from './pages/ProductsPage';
 import RegisterPage from './pages/RegisterPage';
 import { AdminRoute } from './routes/AdminRoute';
 import { RouteNames } from './routes';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
+import { useState } from 'react';
 
 const App: React.FC = () => {
   const { loading } = useAuthStateChanged();
+
   if (loading) {
     return <h1>Loading...</h1>;
   }

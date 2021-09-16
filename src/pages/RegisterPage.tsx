@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActionCreators } from '../state';
 import AuthForm from '../UIcomponents/AuthForm';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button } from '@mui/material';
 
 const initialState = {
   email: '',

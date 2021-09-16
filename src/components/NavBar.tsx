@@ -3,72 +3,92 @@ import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { authActionCreators, userDetailsActionCreators } from '../state';
 import { RouteNames } from '../routes';
-import { makeStyles, AppBar, Typography, Toolbar, Link } from '@material-ui/core';
-const useStyles = makeStyles((theme) => ({
-  offset: theme.mixins.toolbar,
-  root: {
-    backgroundColor: '#9cabfd',
+import { Typography, Toolbar, Button, styled, AppBar as MuiAppBar } from '@mui/material';
+import NavigationDropdownMenu from '../UIcomponents/NavigationDropdownMenu';
+
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
+  // position: 'relative',
+  zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: '#9cabfd',
+  overflow: 'hidden',
+  '&::-webkit-scrollbar': {
+    display: 'none',
   },
-  logo: {
+  '.logo': {
     flex: 1,
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+    textDecoration: 'none',
+    color: 'inherit',
   },
-  flexGroup: {
+  '.flexGroup': {
     display: 'flex',
     gap: theme.spacing(2),
+    alignItems: 'center',
   },
 }));
+
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 const NavBar: React.FC = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { currentUser } = useAppSelector((state) => state.auth);
   const { userId, role } = useAppSelector((state) => state.userDetails);
 
   return (
     <>
-      <AppBar position='fixed' className={classes.root}>
+      <AppBar position='fixed'>
         <Toolbar>
-          <Typography variant='h5' className={classes.logo}>
+          <Typography className='logo' component={RouterLink} to={RouteNames.HOME} variant='h5'>
             Products
           </Typography>
           {currentUser ? (
-            <div className={classes.flexGroup}>
+            <div className='flexGroup'>
               <Typography variant='h5'>{currentUser.displayName}</Typography>
-              <button
+              <Button
+                variant='contained'
                 onClick={() => {
                   dispatch(authActionCreators.logout());
                   dispatch(userDetailsActionCreators.clearUserInfo());
                 }}
               >
                 Log Out
-              </button>
+              </Button>
               {userId && role === 'admin' && (
-                <div className={classes.flexGroup}>
-                  <Link component={RouterLink} to={RouteNames.ADMIN_PRODUCTS}>
-                    Products
-                  </Link>
-                  <Link component={RouterLink} to={RouteNames.ADMIN_ORDERS}>
-                    Orders
-                  </Link>
-                  <Link component={RouterLink} to={RouteNames.HOME}>
-                    Home
-                  </Link>
-                </div>
+                <NavigationDropdownMenu
+                  menuTitle='Options'
+                  options={[
+                    {
+                      to: RouteNames.ADMIN_PRODUCTS,
+                      title: 'Products',
+                    },
+                    {
+                      to: RouteNames.ADMIN_ORDERS,
+                      title: 'Orders',
+                    },
+                    {
+                      to: RouteNames.HOME,
+                      title: 'Home',
+                    },
+                  ]}
+                />
               )}
-              {userId && role === 'customer' && <button>Cart</button>}
             </div>
           ) : (
-            <div className={classes.flexGroup}>
-              <Link component={RouterLink} to={RouteNames.LOGIN}>
+            <div className='flexGroup'>
+              <Button variant='contained' component={RouterLink} to={RouteNames.LOGIN}>
                 Login
-              </Link>
-              <Link component={RouterLink} to={RouteNames.REGISTER}>
+              </Button>
+              <Button variant='outlined' component={RouterLink} to={RouteNames.REGISTER}>
                 Register
-              </Link>
+              </Button>
             </div>
           )}
         </Toolbar>
       </AppBar>
-      <div className={classes.offset} />
+      <Offset />
     </>
   );
 };

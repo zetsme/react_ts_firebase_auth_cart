@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActionCreators } from '../state';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button } from '@mui/material';
 import AuthForm from '../UIcomponents/AuthForm';
 
 const initialState = {

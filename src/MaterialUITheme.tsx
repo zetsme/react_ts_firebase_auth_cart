@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider, CssBaseline } from '@material-ui/core';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 
 const theme = createTheme({
   typography: {
