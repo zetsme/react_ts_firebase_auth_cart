@@ -45,6 +45,9 @@ export const productsReducer = (
         products: state.products.map((i) => (i.docId === docId ? { ...product, docId } : i)),
       };
     }
+    case ProductEnum.PRODUCT_CLEAR: {
+      return { ...state, product: null };
+    }
     default:
       return state;
   }

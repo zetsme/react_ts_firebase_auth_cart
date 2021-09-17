@@ -8,6 +8,7 @@ export enum ProductEnum {
   PRODUCT_UPDATE = 'PRODUCT_UPDATE',
   PRODUCT_GET_ALL = 'PRODUCT_GET_ALL',
   PRODUCT_GET_ONE = 'PRODUCT_GET_ONE',
+  PRODUCT_CLEAR = 'PRODUCT_CLEAR',
 }
 export interface ProductStartAction {
   type: ProductEnum.PRODUCT_START;
@@ -36,6 +37,9 @@ export interface ProductUpdateAction {
   type: ProductEnum.PRODUCT_UPDATE;
   payload: { product: ProductInterface; docId: string };
 }
+export interface ProductClearAction {
+  type: ProductEnum.PRODUCT_CLEAR;
+}
 
 export type ProductAction =
   | ProductStartAction
@@ -44,4 +48,5 @@ export type ProductAction =
   | ProductGetAllAction
   | ProductGetOneAction
   | ProductDeleteAction
-  | ProductUpdateAction;
+  | ProductUpdateAction
+  | ProductClearAction;

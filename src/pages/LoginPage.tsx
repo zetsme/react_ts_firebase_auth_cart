@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActionCreators } from '../state';
 import { TextField, Button } from '@mui/material';
-import AuthForm from '../UIcomponents/AuthForm';
+import Form from '../components/Form';
 
 const initialState = {
   email: '',
@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
     }
   };
   return (
-    <AuthForm title='Login Form' {...{ onSubmit }}>
+    <Form title='Login Form' fullheight='true' {...{ onSubmit }}>
       <TextField
         type='email'
         label='Email'
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
       <Button size='large' variant='contained' color='primary' type='submit'>
         Log In
       </Button>
-    </AuthForm>
+    </Form>
   );
 };
 

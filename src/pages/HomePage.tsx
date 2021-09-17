@@ -1,23 +1,14 @@
-import { useEffect, useState } from 'react';
-import { ChevronRight, ShoppingCart } from '@mui/icons-material';
-import {
-  Button,
-  Divider,
-  IconButton,
-  Drawer as MuiDrawer,
-  Grid,
-  GridProps,
-  styled,
-} from '@mui/material';
-import { purple } from '@mui/material/colors';
+import { useCallback, useEffect, useState } from 'react';
+import { styled, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../hooks/useAppSelector';
 //
-import CartProductCard from '../components/CartProductCard';
-import ProductBigCard from '../components/ProductBigCard';
 import { productsActionCreators } from '../state';
+import HomePageGridContainer from '../components/HomePageGridCardContainer';
+import CartButton from '../components/CartButton';
+import Cart from '../components/Cart';
 
-const drawerWidth = window.innerWidth < 500 ? window.innerWidth : 500;
+const drawerwidth = window.innerWidth < 500 ? window.innerWidth : 400;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -29,7 +20,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  // marginRight: -drawerWidth,
   ...(open && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -39,66 +29,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   }),
 }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-start',
-}));
-
-const Drawer = styled(MuiDrawer)(({ theme }) => ({
-  '.MuiPaper-root': {
-    top: `56px`,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      top: `48px`,
-    },
-    [theme.breakpoints.up('sm')]: {
-      top: `64px`,
-    },
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
-  },
-}));
-
-const CartButton = styled(Button)(({ theme }) => ({
-  position: 'fixed',
-  right: theme.spacing(2),
-  zIndex: 800,
-  color: theme.palette.getContrastText(purple[500]),
-  backgroundColor: purple[500],
-  '&:hover': {
-    backgroundColor: purple[700],
-  },
-}));
-
-interface GridContainerProps extends GridProps {
-  open?: boolean;
-}
-
-const GridContainer = styled(Grid, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<GridContainerProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: drawerWidth,
-  }),
-  // justifyContent: 'center',
-}));
-
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
-  const { error, products } = useAppSelector((state) => state.products);
-  const { cart, role, userId } = useAppSelector((state) => state.userDetails);
+  const { error, loading } = useAppSelector((state) => state.products);
+  const { role, userId } = useAppSelector((state) => state.userDetails);
 
   useEffect(() => {
     dispatch(productsActionCreators.getAllProducts());
@@ -106,64 +40,30 @@ const HomePage: React.FC = () => {
 
   //
   const [open, setOpen] = useState(false);
+  const handleDrawerOpen = useCallback(() => setOpen(true), []);
+  const handleDrawerClose = useCallback(() => setOpen(false), []);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  useEffect(() => handleDrawerClose(), [userId, handleDrawerClose]);
 
   if (error) {
     return <h1>{error}</h1>;
+  }
+  if (loading) {
+    return <h1>Loading....</h1>;
   }
 
   return (
     <>
       <Main open={open}>
-        {userId && role === 'customer' && (
-          <CartButton
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: 'none' }) }}
-            variant='contained'
-            size='large'
-            startIcon={<ShoppingCart />}
-          >
-            Cart
-          </CartButton>
+        {!userId && !loading && (
+          <Typography align='center' variant='h4' mb={4}>
+            Login and Add Items to Cart
+          </Typography>
         )}
-        <GridContainer spacing={4} open={open} container>
-          {products.map((product) => (
-            <Grid item xs='auto' key={product.docId}>
-              <ProductBigCard {...{ product }} />
-            </Grid>
-          ))}
-        </GridContainer>
+        {userId && role === 'customer' && <CartButton {...{ open, handleDrawerOpen }} />}
+        <HomePageGridContainer {...{ open, drawerwidth }} />
       </Main>
-      <Drawer
-        sx={{
-          width: 'drawerWidth',
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-          },
-        }}
-        variant='persistent'
-        anchor='right'
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronRight />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <Grid container>
-          {cart.length > 0 &&
-            cart.map((cartItem) => <CartProductCard key={cartItem.docId} {...{ cartItem }} />)}
-        </Grid>
-      </Drawer>
+      <Cart {...{ drawerwidth, open, handleDrawerClose }} />
     </>
   );
 };

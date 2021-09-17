@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react';
+import { Button, Grid } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import ProductSmallCard from '../components/ProductSmallCard';
+import AddEditModal from '../components/AddEditModal';
+import AdminPageProductCard from '../components/AdminPageProductCard';
+
 import { useAppSelector } from '../hooks/useAppSelector';
 import { productsActionCreators } from '../state';
 
@@ -16,7 +19,6 @@ const ProductsPage: React.FC = () => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [inputValues, setInputValues] = useState(initialState);
-  const { title, price, category, description, image } = inputValues;
 
   const { error, loading, products, product } = useAppSelector((state) => state.products);
 
@@ -28,7 +30,7 @@ const ProductsPage: React.FC = () => {
     } else {
       dispatch(productsActionCreators.addProduct(inputValues));
     }
-    setInputValues(initialState);
+    handleClose();
   };
   const onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) =>
     setInputValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -36,6 +38,7 @@ const ProductsPage: React.FC = () => {
   const editProduct = (docId: string) => {
     setEditMode(true);
     dispatch(productsActionCreators.getOneProduct(docId));
+    handleOpen();
   };
 
   useEffect(() => {
@@ -47,6 +50,15 @@ const ProductsPage: React.FC = () => {
       setInputValues((prev) => ({ ...prev, ...product }));
     }
   }, [product]);
+  // Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = useCallback(() => setOpen(true), []);
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    setEditMode(false);
+    setInputValues(initialState);
+    dispatch(productsActionCreators.clearProduct());
+  }, [dispatch]);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -55,57 +67,19 @@ const ProductsPage: React.FC = () => {
     return <h1>{error}</h1>;
   }
   return (
-    <div>
-      <div>
-        <form onSubmit={onSubmit}>
-          <h3>{editMode ? 'Update Product' : 'Add New Product'}</h3>
-          <input
-            type='text'
-            placeholder='Product Title'
-            name='title'
-            value={title}
-            onChange={onChange}
-          />
-          <input
-            type='text'
-            placeholder='Category'
-            name='category'
-            value={category}
-            onChange={onChange}
-          />
-          <textarea
-            placeholder='Description'
-            name='description'
-            value={description}
-            onChange={onChange}
-          />
-          <input
-            type='text'
-            placeholder='Image URL'
-            name='image'
-            value={image}
-            onChange={onChange}
-          />
-          <label>
-            Price
-            <input
-              type='number'
-              placeholder='Price'
-              name='price'
-              value={price}
-              onChange={onChange}
-            />
-          </label>
-
-          <button type='submit'>{editMode ? 'Update Product' : 'Add New Product'}</button>
-        </form>
-      </div>
-      <div>
+    <>
+      <AddEditModal {...{ editMode, handleClose, inputValues, onChange, onSubmit, open }} />
+      <Button variant='contained' sx={{ margin: '20px 0' }} onClick={handleOpen}>
+        Add New Product
+      </Button>
+      <Grid pb={4} pt={2} container spacing={4}>
         {products.map((product) => (
-          <ProductSmallCard key={product.docId} {...{ product, editProduct }} />
+          <Grid item key={product.docId} xs='auto'>
+            <AdminPageProductCard {...{ product, editProduct }} />
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </>
   );
 };
 

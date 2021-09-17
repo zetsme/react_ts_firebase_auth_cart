@@ -47,3 +47,6 @@ export const deleteProduct = (docId: string) => async (dispatch: AppDispatch) =>
     dispatch({ type: ProductEnum.PRODUCT_ERROR, payload: 'Product Delete Error' });
   }
 };
+export const clearProduct = () => (dispatch: AppDispatch) => {
+  dispatch({ type: ProductEnum.PRODUCT_CLEAR });
+};

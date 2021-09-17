@@ -9,7 +9,6 @@ import RegisterPage from './pages/RegisterPage';
 import { AdminRoute } from './routes/AdminRoute';
 import { RouteNames } from './routes';
 import { Container } from '@mui/material';
-import { useState } from 'react';
 
 const App: React.FC = () => {
   const { loading } = useAuthStateChanged();

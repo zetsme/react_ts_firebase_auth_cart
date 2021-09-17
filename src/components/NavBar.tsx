@@ -4,10 +4,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { authActionCreators, userDetailsActionCreators } from '../state';
 import { RouteNames } from '../routes';
 import { Typography, Toolbar, Button, styled, AppBar as MuiAppBar } from '@mui/material';
-import NavigationDropdownMenu from '../UIcomponents/NavigationDropdownMenu';
+import NavigationDropdownMenu from './NavigationDropdownMenu';
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
-  // position: 'relative',
   zIndex: theme.zIndex.drawer + 1,
   backgroundColor: '#9cabfd',
   overflow: 'hidden',
@@ -54,7 +53,7 @@ const NavBar: React.FC = () => {
                   dispatch(userDetailsActionCreators.clearUserInfo());
                 }}
               >
-                Log Out
+                LogOut
               </Button>
               {userId && role === 'admin' && (
                 <NavigationDropdownMenu
@@ -78,10 +77,16 @@ const NavBar: React.FC = () => {
             </div>
           ) : (
             <div className='flexGroup'>
-              <Button variant='contained' component={RouterLink} to={RouteNames.LOGIN}>
+              <Button size='small' variant='contained' component={RouterLink} to={RouteNames.LOGIN}>
                 Login
               </Button>
-              <Button variant='outlined' component={RouterLink} to={RouteNames.REGISTER}>
+              <Button
+                size='small'
+                variant='outlined'
+                color='inherit'
+                component={RouterLink}
+                to={RouteNames.REGISTER}
+              >
                 Register
               </Button>
             </div>

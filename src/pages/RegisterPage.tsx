@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActionCreators } from '../state';
-import AuthForm from '../UIcomponents/AuthForm';
+import Form from '../components/Form';
 import { TextField, Button } from '@mui/material';
 
 const initialState = {
@@ -28,7 +28,7 @@ const RegisterPage: React.FC = () => {
     }
   };
   return (
-    <AuthForm title='Register Form' {...{ onSubmit }}>
+    <Form title='Register Form' fullheight='true' {...{ onSubmit }}>
       <TextField
         type='email'
         variant='outlined'
@@ -57,7 +57,7 @@ const RegisterPage: React.FC = () => {
       <Button type='submit' size='large' variant='contained' color='primary'>
         Register
       </Button>
-    </AuthForm>
+    </Form>
   );
 };
 
