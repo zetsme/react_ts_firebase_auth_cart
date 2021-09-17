@@ -56,6 +56,7 @@ const Cart: React.FC<CartProps> = ({ drawerwidth, open, handleDrawerClose }) => 
       </DrawerHeader>
       <Divider />
       <Grid container gap={2} p={2} pb={12}>
+        {!cart.length && <h1>No Items in Cart</h1>}
         {cart.length > 0 &&
           cart.map((cartItem) => (
             <Grid key={cartItem.docId} item xs={12}>

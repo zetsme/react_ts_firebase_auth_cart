@@ -1,7 +1,7 @@
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { ordersActionCreators } from '../state';
@@ -26,34 +26,37 @@ const OrdersPage: React.FC = () => {
       {loading && <Typography variant='h4'>Loading ....</Typography>}
       {!loading && orders.length === 0 && <Typography variant='h4'>No Orders</Typography>}
       {!loading && orders.length && (
-        <div>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {orders.map((order) => (
             <Accordion
               key={order.docId}
               expanded={expanded === order.docId}
               onChange={handleChange(order.docId)}
+              elevation={8}
             >
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Box sx={{ display: 'flex', gap: '10px' }}>
-                  <Typography>{order.displayName}</Typography>
-                  <Typography>{order.email}</Typography>
+                  <Typography color='primary'>{order.displayName}</Typography>
+                  <Typography color='#b05400'>{order.email}</Typography>
                 </Box>
-                <Typography sx={{ marginLeft: 'auto', pr: 4 }}>${total(order.cart)}</Typography>
+                <Typography color='#ba2d3f' sx={{ marginLeft: 'auto', pr: 4 }}>
+                  ${total(order.cart)}
+                </Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {order.cart.map((item) => (
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }} key={item.docId}>
+                  <Box key={item.docId}>
                     <Box sx={{ display: 'flex', gap: '10px' }}>
                       <Typography>{item.title}</Typography>
                       <Typography>* {item.amount}</Typography>
+                      <Typography> = ${item.amount * item.price}</Typography>
                     </Box>
-                    <Typography>{item.amount * item.price}</Typography>
                   </Box>
                 ))}
               </AccordionDetails>
             </Accordion>
           ))}
-        </div>
+        </Box>
       )}
     </div>
   );

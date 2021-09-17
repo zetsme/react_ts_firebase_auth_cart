@@ -38,7 +38,6 @@ const HomePage: React.FC = () => {
     dispatch(productsActionCreators.getAllProducts());
   }, [dispatch]);
 
-  //
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = useCallback(() => setOpen(true), []);
   const handleDrawerClose = useCallback(() => setOpen(false), []);

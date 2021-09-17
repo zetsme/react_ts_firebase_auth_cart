@@ -50,7 +50,7 @@ const ProductsPage: React.FC = () => {
       setInputValues((prev) => ({ ...prev, ...product }));
     }
   }, [product]);
-  // Modal
+
   const [open, setOpen] = useState(false);
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => {

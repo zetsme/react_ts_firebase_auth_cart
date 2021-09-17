@@ -1,10 +1,8 @@
-import { Card, CardContent, CardMedia, Fab, Typography } from '@mui/material';
-//
+import { Card, CardContent, CardMedia, Fab, Typography, Box, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { CartItemInterface } from '../types';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { userDetailsActionCreators } from '../state';
-import { Box, styled } from '@mui/system';
 import { Add, Remove } from '@mui/icons-material';
 
 interface CartProductCardProps {
